@@ -47,7 +47,19 @@ bluesMelody =
   in
     bass :=: riff
 
-m = fromBlues(bluesMelody)
+--m = fromBlues(bluesMelody)
+
+-- Exercise 2.5
+transM :: AbsPitch -> Music Pitch -> Music Pitch
+transM tp (Prim (Note d p)) = (Prim (Note d (trans tp p)))
+transM tp (Prim (Rest d)) = (Prim (Rest d))
+transM tp (m1 :+: m2) = (transM tp m1 :+: transM tp m2)
+transM tp (m1 :=: m2) = (transM tp m1 :=: transM tp m2)
+transM tp (Modify c m) = (Modify c (transM tp m))
+
+music = fromBlues(bluesMelody)
+m = music :+: (transM 3 music)
+
 
 main =
   playDev 5 m
